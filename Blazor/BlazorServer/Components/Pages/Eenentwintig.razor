@@ -5,11 +5,17 @@
 <div class="mb-3">
     @foreach (var kaart in kaarten) {
         var pad = $"/images/{kaart}.png";
-        <img src="@pad width="48" />
+        <img src="@pad" width="48" />
     }
 </div>
 
 <p class="alert alert-info">Jouw score : @currentScore</p>
+<CopyrightFooter Auteur="Hamdan">
+    <ChildContent>
+        <h4>Blazor rocks</h4>
+    </ChildContent>
+</CopyrightFooter>
+<Weather Dag="1" />
 @code {
     private int currentScore = 0;
     private List<string> kaarten = new List<string>();
@@ -31,5 +37,9 @@
     private void TrekKaart()
     {
         kaarten.Add(GetRandomCard());
+        if (currentScore > 21)
+        {
+            throw new InvalidOperationException("Je bent verbrand!");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/weather"
+@page "/weather/{DaG:int}"
 
 <PageTitle>Weather</PageTitle>
 
@@ -12,32 +13,47 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Farenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
+    if (Dag > 0 && Dag < 6)
+    {
+        
+        var forecast = forecasts[Dag - 1];
+        <h3>
+            Forecast for @forecast.Date.ToShortDateString() (today + @Dag day(s))
+        </h3>
+        <p>Temp. (C) : @forecast.TemperatureC</p>
+        <p>Temp. (F) : @forecast.TemperatureF</p>
+        <p>Summary : @forecast.Summary</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <th>Date</th>
+                    <th aria-label="Temperature in Celsius">Temp. (C)</th>
+                    <th aria-label="Temperature in Farenheit">Temp. (F)</th>
+                    <th>Summary</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var forecast in forecasts)
+                {
+                    <tr>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.Summary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 @code {
     private WeatherForecast[]? forecasts;
-
+    [Parameter]
+    public int Dag { get; set; }
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate a loading indicator

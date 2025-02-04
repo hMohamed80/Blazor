@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Models\Artikel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

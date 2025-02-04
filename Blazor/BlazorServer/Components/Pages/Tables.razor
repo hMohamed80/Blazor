@@ -1,0 +1,88 @@
+﻿@page "/tables"
+<TableTemplate Items="artikels" TItem="Artikel" Context="artikel">
+     <TableHeader>
+         <th>Id</th>
+         <th>Naam</th>
+         <th>Prijs</th>
+         <th>Omschrijving</th>
+     </TableHeader>
+    <RowTemplate>
+         <td>@artikel.Id</td>
+         <td>@artikel.Naam</td>
+        <td>@artikel.Prijs</td>
+        <td>@artikel.Omschrijving</td>
+    </RowTemplate>
+    <TableFooter>
+        &copy; VDAB 2020
+    </TableFooter>
+</TableTemplate>
+<TableTemplate Items="personen" TItem="Persoon" Context="Persoon">
+    <TableHeader>
+        <th>Id</th>
+        <th>Voornaam</th>
+        <th>Familienaam</th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@Persoon.Id</td>
+        <td>@Persoon.Voornaam</td>
+        <td>@Persoon.Familienaam</td>
+    </RowTemplate>
+</TableTemplate>
+<TableTemplate Items="boeken" TItem="Boek" Context="Boek">
+    <TableHeader>
+        <h1>Boekenlijst</h1>
+    </TableHeader>
+    <RowTemplate>
+        <div class="links">
+            <img src="/images/@Boek.Afbeelding" height="200" width="140" />
+        </div>
+        <div class="rechts">
+            <h3>@Boek.Auteur</h3>
+            <h2>@Boek.Titel</h2>
+            <p>
+                @Boek.Taal | @Boek.Afwerking | @Boek.ISBN | @Boek.UitgifteDatum |
+                @Boek.Paginas pagina's
+            </p>
+            <h6>@Boek.Beschrijving</h6>
+        </div>
+    </RowTemplate>
+</TableTemplate>
+@code {
+    public IEnumerable<Artikel> artikels { get; set; } = new List<Artikel>() {
+     new Artikel {Id = 1, Naam = "Zaag", Prijs = 11.50m,
+     Omschrijving = "Handzaag 50cm" },
+     new Artikel { Id = 2, Naam = "Hamer", Prijs = 74.99m,
+     Omschrijving = "Voorhamer 10kg" },
+     new Artikel { Id = 3, Naam = "Beitel", Prijs = 15.75m,
+     Omschrijving = "Steenbeitel 30cm" }
+    };
+    public IEnumerable<Persoon> personen { get; set; } = new List<Persoon>() {
+     new Persoon { Id = 1, Voornaam = "Steven", Familienaam = "Lucas" },
+     new Persoon { Id = 2, Voornaam = "John", Familienaam = "Fitzgerald" },
+     new Persoon { Id = 3, Voornaam = "Rita", Familienaam = "Jones" }
+    };
+    public IEnumerable<Boek> boeken { get; set; } = new List<Boek>() {
+ new Boek {
+ Auteur = "J.K. Rowling", Titel = "Harry Potter en de steen der wijzen",
+ Afwerking = "Paperback", Paginas = 301,
+ ISBN = "9789061699767", Taal = "Nederlands",
+ UitgifteDatum = "januari 2022", Afbeelding = "SteenDerWijzen.jpg",
+ Beschrijving = "Harry Potter is een doodgewone, maar ongelukkige jongen die sinds de dood van zijn ouders bij" +
+ "zijn saaie en hardvochtige oom en tante woont,in de bezemkast onder de trap." },
+ new Boek {
+ Auteur = "Fjodor Dostojevski", Titel = "Schuld en boete",
+ Afwerking = "Paperback", Paginas = 286,
+ ISBN = "9789031505128", Taal = "Nederlands",
+ UitgifteDatum = "september 2008", Afbeelding = "SchuldEnBoete.jpg",
+ Beschrijving = "Schuld en boete is de geschiedenis van de geestelijk en sociaal onderkomen student Raskoljnikow, " +
+ "die door een 'Napoleontische' daad zijn gevoel van eigenwaarde en onafhankelijkheid tracht te handhaven en een moordenaar wordt. "+
+ "Later komt hij door zijn liefde voor het gevallen meisje Sonja, die verheffend op hem werkt, tot vrijwillige schuldbetekenis." },
+ new Boek {
+ Auteur = "Hugo Claus", Titel = "Het verdriet van België",
+ Afwerking = "Paperback", Paginas = 720,
+ ISBN = "9789403108100", Taal = "Nederlands",
+ UitgifteDatum = "februari 2018", Afbeelding = "VerdrietVanBelgie.jpg",
+ Beschrijving = "Het verdriet van België omspant de periode 1939-1947: vrede, oorlog en vrede. Louis Seynaeve is elf jaar en leerling " +
+ "op een nonneninternaat. Verwarring, hunkering en bedrog vormen zijn jongensjaren in de schoot van een kleurrijke en verbazingwekkende familie." }
+ };
+}
