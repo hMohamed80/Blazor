@@ -1,12 +1,24 @@
 ﻿<div class="alert alert-info">
-    <div>&copy; @Auteur</div>
+    <div>@Doelgroep - @Cursus</div>
+    <div>&copy; @Auteur (@Jaartal)</div>
     <div>@ChildContent</div>
 </div>
 
-@code {
-    [Parameter]
-    public string? Auteur { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+@code {
+     [Parameter]
+     public string? Auteur { get; set; }
+     [Parameter]
+     public string? Cursus { get; set; }
+     [Parameter]
+     public int Jaartal { get; set; }
+     [Parameter]
+     public string? Doelgroep { get; set; }
+     [Parameter]
+     public RenderFragment? ChildContent { get; set; }
+
+    public string AlleInfo()
+    {
+        return $"{Auteur} {Cursus} {Jaartal} {Doelgroep}";
+    }
 }
