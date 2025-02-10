@@ -50,9 +50,13 @@ public class EenentwintigBase : ComponentBase
     protected void TrekKaart()
     {
         kaarten.Add(GetRandomCard());
-        if (currentScore > 21)
-        {
-            throw new InvalidOperationException("Je bent verbrand!");
-        }
+        //if (currentScore > 21)
+        //{
+        //    throw new InvalidOperationException("Je bent verbrand!");
+        //}
+    }
+    protected override bool ShouldRender()
+    {
+        return currentScore <= 21;
     }
 }

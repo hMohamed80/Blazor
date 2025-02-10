@@ -1,0 +1,47 @@
+﻿@page "/todo"
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using System.Text.Json
+<h3>TodoList</h3>
+<label for="todo" class="form-label">Nieuwe taak</label>
+<input id="todo" @bind="nieuweTodo" type="text" class="form-control" />
+<button class="btn btn-primary my-3"
+        @onclick="async () => await SaveTodoAsync()">
+    Save
+</button>
+@foreach (var taak in todos)
+{
+    <p>
+        <img src="images/delete.png" class="me-2"
+             @onclick="async () => await DeleteTodoAsync(taak)" />@taak
+    </p>
+}
+@code {
+     private string? nieuweTodo;
+     private List<string> todos = new List<string>();
+     protected override async Task OnAfterRenderAsync(bool firstRender)
+     {
+         if (firstRender) {
+         var geserialiseerdelijst =
+         await localStore.GetItemAsync<string>("todos");
+         if (geserialiseerdelijst != null)
+         todos = JsonSerializer.Deserialize<List<string>>(
+         geserialiseerdelijst);
+         StateHasChanged();
+         }
+     }
+     public async Task SaveTodoAsync()
+     {
+         if (nieuweTodo != string.Empty) {
+         todos.Add(nieuweTodo);
+         nieuweTodo = string.Empty;
+         await localStore.SetItemAsync<string>("todos",
+         JsonSerializer.Serialize(todos));
+         }
+    }
+    public async Task DeleteTodoAsync(string taak)
+    {
+        todos.Remove(taak);
+        await localStore.SetItemAsync<string>("todos",
+        JsonSerializer.Serialize(todos));
+    }
+}

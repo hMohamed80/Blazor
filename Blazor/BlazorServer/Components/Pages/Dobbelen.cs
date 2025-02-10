@@ -20,9 +20,14 @@ public partial class Dobbelen
             currentScore += ogen;
         }
     }
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        if (Aantal == 0) Aantal = 2;
+    }
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (Aantal == 0) Aantal = 2;
     }
+
 }

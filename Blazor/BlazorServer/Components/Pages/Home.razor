@@ -1,15 +1,57 @@
 ﻿@page "/"
-
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-<ErrorBoundary>
-    <ChildContent>
-        <Eenentwintig />
-    </ChildContent>
-    <ErrorContent>
-        <p class="alert alert-danger">Je bent verbrand</p>
-    </ErrorContent>
-</ErrorBoundary>
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage localStore
+@if (!naamgekend)
+{
+    <label for="naam" class="form-label">Jouw naam</label>
+    <input id="naam" type="text" @bind="naam" class="form-control" />
+    <button class="btn btn-success mt-3"
+            @onclick="async () => await SaveLocalAsync()">
+        Naam opslaan
+    </button>
+}
+else
+{
+    <span>Hallo @naam</span>
+    <button class="btn btn-danger ms-3"
+            @onclick="async () => await ClearLocalAsync()">
+        Naam wissen
+    </button>
+}
+@code {
+    private string? naam;
+    private bool naamgekend = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                var result = await localStore.GetAsync<string>("usernaam");
+                if (result.Success)
+                {
+                    naam = result.Value;
+                    naamgekend = true;
+                    StateHasChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+                naam = null;
+                naamgekend = false;
+                StateHasChanged();
+            }
+        }
+    }
+    public async Task SaveLocalAsync()
+    {
+        await localStore.SetAsync("usernaam", naam);
+        naamgekend = true;
+    }
+    public async Task ClearLocalAsync()
+    {
+        naam = null;
+        naamgekend = false;
+        await localStore.DeleteAsync("usernaam");
+    }
+}

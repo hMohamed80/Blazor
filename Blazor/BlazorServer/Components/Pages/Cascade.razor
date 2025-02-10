@@ -1,0 +1,37 @@
+﻿@page "/cascade"
+<h1>Cascade</h1>
+<p>Waarde getal in cascade.razor : @Getal</p>
+<button class="btn btn-primary mb-2"
+ @onclick="Verhoog">Verhoog de waarde van getal met 1</button>
+<CascadingValue Name="HetGetal" Value="@Getal">
+    <CascadingValue Value="@Woord">
+        <SubComponent />
+    </CascadingValue>
+</CascadingValue>
+<CascadingValue Name="Gegevens" Value="@Gegevens">
+    <SubComponent />
+</CascadingValue>
+
+<CascadingValue Name="DePersoon" Value="@Depersoon">
+    <CascadingValue Name="HetGetal" Value="@Getal">
+        <CascadingValue Value="@Woord">
+            <SubComponent />
+        </CascadingValue>
+    </CascadingValue>
+</CascadingValue>
+@code {
+    private Persoon Depersoon =
+     new Persoon { Id = 1, Voornaam = "Hamdan", Familienaam = "Mohamed" };
+ private int Getal = 10;
+    private string Woord = "VDAB";
+    private Gegevens Gegevens = new Gegevens
+        {
+            Eerste = 1,
+            Tweede = "Twee",
+            Derde = "Derde"
+        };
+    private void Verhoog()
+    {
+        Getal++;
+    }
+}

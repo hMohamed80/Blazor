@@ -1,0 +1,11 @@
+﻿@page "/binding"
+<h3>Binding</h3>
+<textarea rows="3" cols="20" @bind="ingetikteTekst" @bind:event="oninput"></textarea>
+<p>Lengte van de tekst: @lengte()</p>
+@code {
+    private string ingetikteTekst = "voorbeeld";
+    private int lengte()
+    {
+        return ingetikteTekst.Length;
+    }
+}

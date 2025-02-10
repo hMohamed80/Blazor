@@ -1,0 +1,17 @@
+﻿
+<div class="ms-4 mt-4" style="background-color:lightblue;padding:30px;">
+    <h3>SubComponent</h3>
+    <CascadingValue Name="GetalVanSubComponent" Value="13" IsFixed="true">
+        <CascadingValue Value="@woord">
+            <SubSubComponent />
+            <CascadingValue Name="HetGetal" Value="1">
+                <SubSubComponent />
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+
+</div>
+@code {
+    private string woord = "Dichterbij";
+}
+
