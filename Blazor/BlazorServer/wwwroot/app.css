@@ -79,3 +79,6 @@ h1:focus {
 .rechts {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+h1 {
+    color: green;
+}
