@@ -1,0 +1,31 @@
+﻿@page "/file"
+<h3>Bestandenlijst</h3>
+@if (files?.Count > 0) {
+<table class="table">
+ <thead>
+ <tr>
+ <th>Naam</th>
+ <th>Grootte</th>
+                <th>Laatste wijziging</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in files)
+            {
+                <tr>
+                    <td>@file.Name</td>
+                    <td>@((Math.Ceiling(file.Size / 1024F)).ToString("#.### KB"))</td>
+                    <td>@file.LastModified.ToString("dd/MM/yyyy HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<InputFile OnChange="@OnInputFileChange" multiple class="btn" />
+@code {
+    private IReadOnlyList<IBrowserFile> files;
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        files = e.GetMultipleFiles();
+    }
+}

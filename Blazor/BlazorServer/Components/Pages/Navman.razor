@@ -1,0 +1,27 @@
+﻿@page "/navman"
+@inject NavigationManager navmanager
+<h3>Navman</h3>
+<input @bind-value="URL" />
+<button @onclick="Navigeer" class="btn btn-primary">Navigeer</button>
+<p>Huidige URI : @uri</p>
+<p>Huidige BaseURI : @baseuri</p>
+<p>Naar een absolute URI : @absuri</p>
+<p>Naar een BaseRelativePath : @baserelpath</p>
+@code {
+    public string URL { get; set; } = "weather";
+    string uri;
+    string baseuri;
+    string absuri;
+    string baserelpath;
+    void Navigeer()
+    {
+        navmanager.NavigateTo(URL);
+    }
+    protected override void OnInitialized()
+    {
+        uri = navmanager.Uri;
+        baseuri = navmanager.BaseUri;
+        absuri = navmanager.ToAbsoluteUri(URL).ToString();
+        baserelpath = navmanager.ToBaseRelativePath(absuri);
+    }
+}

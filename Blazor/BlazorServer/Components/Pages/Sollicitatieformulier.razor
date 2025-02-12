@@ -1,0 +1,76 @@
+﻿@page "/solliciteren"
+<h1>Sollicitatieformulier</h1>
+<EditForm Model="@sollicitant" OnValidSubmit="HandleValidSubmit">
+ <DataAnnotationsValidator />
+ <div class="row my-3">
+ <label for="naam" class="col-sm-2 col-form-label">Naam</label>
+ <div class="col-sm-4">
+ <InputText id="naam" @bind-Value="sollicitant.Naam" class="form-control" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="voornaam" class="col-sm-2 col-form-label">Voornaam</label>
+ <div class="col-sm-4">
+ <InputText id="voornaam" @bind-Value="sollicitant.Voornaam"
+ class="form-control" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="geboortedatum" class="col-sm-2 col-form-label">Geboortedatum</label>
+ <div class="col-sm-2">
+ <InputDate id="geboortedatum" @bind-Value="sollicitant.GeboorteDatum"
+ class="form-control" />
+ </div>
+ </div>
+    <div class="row my-3">
+        <label for="email" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-4">
+            <InputText id="email" @bind-Value="sollicitant.Email"
+                       class="form-control" />
+        </div>
+    </div>
+    <div class="row my-3">
+        <label for="rijbewijs" class="col-sm-2 col-form-label">Rijbewijs</label>
+        <div class="col-sm-1 mt-2">
+            <InputCheckbox id="rijbewijs" @bind-Value="sollicitant.Rijbewijs" />
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-sm-2">Diploma</div>
+        <div class="col-sm-4 form-check ml-3">
+            <InputRadioGroup @bind-Value="sollicitant.Diploma">
+                @foreach (var diploma in (Diploma[])Enum.GetValues(typeof(Diploma)))
+                {
+                    <div class="my-2 ms-3">
+                        <InputRadio Value="diploma" class="form-check-input"
+                                    id="@diploma" />
+                        <label class="form-check-label"
+                               for="@diploma">@diplomas[(int)diploma]</label>
+                    </div>
+                }
+            </InputRadioGroup>
+        </div>
+    </div>
+    <div class="row my-3">
+        <label for="functie" class="col-sm-2 col-form-label">Functie</label>
+        <div class="col-sm-3">
+            <InputSelect id="functie" class="form-control"
+                         @bind-Value="sollicitant.Functie">
+                <option value="">- Kies een functie -</option>
+                <option>software tester</option>
+                <option>junior .NET ontwikkelaar</option>
+                <option>full stack .NET developer</option>
+                <option>medior/senior developer</option>
+            </InputSelect>
+        </div>
+    </div>
+    <ValidationSummary />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+@code {
+    private static readonly List<string> diplomas = new List<string> { "Geen",
+ "Middelbaar onderwijs", "Hoger onderwijs, niet universitair",
+ "Hoger onderwijs, universitair" };
+    private Sollicitant sollicitant = new Sollicitant();
+    private void HandleValidSubmit() { }
+}

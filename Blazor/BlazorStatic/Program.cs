@@ -21,6 +21,7 @@ app.UseHttpsRedirection();
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>()
+ .AddAdditionalAssemblies(typeof(RazorClassLibrary.Component1).Assembly);
 
 app.Run();

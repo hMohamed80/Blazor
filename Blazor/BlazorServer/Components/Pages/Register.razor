@@ -1,0 +1,122 @@
+﻿@page "/register"
+<h1>Registratieformulier</h1>
+<EditForm Model="@userViewModel" OnValidSubmit="HandleValidSubmit">
+    <ObjectGraphDataAnnotationsValidator/>
+    <div class="row my-3">
+        <div class="col-3">
+            <label for="voornaam" class="col-form-label">Voornaam</label>
+            <InputText id="voornaam" @bind-Value="userViewModel.Voornaam"
+                       class="form-control" />
+        </div>
+        <div class="col-3">
+            <label for="familienaam" class="col-form-label">
+                Familienaam
+            </label>
+            <InputText id="familienaam" @bind-Value="userViewModel.Familienaam"
+                       class="form-control" />
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-2">
+            <label for="geboortedatum" class="col-form-label">
+                Geboortedatum
+            </label>
+            <InputDate id="geboortedatum" @bind-Value="userViewModel.GeboorteDatum" class="form-control" />
+        </div>
+        <div class="col-2">
+            <label for="opleidingscentrum" class="col-form-label">
+                Opleidingscentrum
+            </label>
+            <InputSelect id="opleidingscentrum" class="form-control"
+                         @bind-Value="userViewModel.Opleidingscentrum">
+                <option>Antwerpen</option>
+                <option>Genk</option>
+                <option>Heverlee</option>
+                <option>Wevelgem</option>
+                <option>Wondelgem</option>
+            </InputSelect>
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-3">
+            <label for="email" class="col-form-label">Email</label>
+            <InputText id="email" @bind-Value="userViewModel.Email"
+                       class="form-control" />
+        </div>
+        <div class="col-3">
+            <label for="confirmemail" class="col-form-label">
+                ConfirmEmail
+            </label>
+            <InputText id="confirmemail" @bind-Value="userViewModel.ConfirmEmail"
+                       class="form-control" />
+        </div>
+    </div>
+    
+    <div class="row mb-3 ms-1">
+        <div class="form-check">
+            <InputCheckbox id="rijbewijs" @bind-Value="userViewModel.Rijbewijs"
+                           class="form-check-input" />
+            <label for="rijbewijs" class="form-check-label">
+                Rijbewijs
+            </label>
+        </div>
+    </div>
+
+
+    <div class="row my-3 ">
+        <div class="col-3">
+            <label for="adres" class="col-form-label">
+                Straat en huisnummer
+            </label>
+            <InputText id="adres" @bind-Value="userViewModel.Adres.StraatEnNr"
+                       class="form-control" />
+        </div>
+        <div class="col-1">
+            <label for="postcode" class="col-form-label">
+                Postcode
+            </label>
+            <InputText id="postcode" @bind-Value="userViewModel.Adres.Postcode"
+                       class="form-control" />
+        </div>
+        <div class="col-2">
+            <label for="gemeente" class="col-form-label">
+                Gemeente
+            </label>
+            <InputText id="gemeente" @bind-Value="userViewModel.Adres.Gemeente"
+                       class="form-control" />
+        </div>
+    </div>
+
+
+
+
+
+
+
+    Finaliteit
+ <br />
+ <div class="form-check mt-2">
+        <InputRadioGroup @bind-Value="userViewModel.Finaliteit">
+            @foreach (var finaliteit in (Finaliteit[])Enum.
+            GetValues(typeof(Finaliteit)))
+            {
+                <div class="my-2">
+                    <InputRadio Value="finaliteit" class="form-check-input"
+                                id="@finaliteit" />
+                    <label class="form-check-label" for="@finaliteit">
+                        @finaliteit
+                    </label>
+                </div>
+            }
+        </InputRadioGroup>
+    </div>
+    <ValidationSummary />
+    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+</EditForm>
+@code {
+    private UserViewModel userViewModel = new UserViewModel();
+    private void HandleValidSubmit()
+    {
+        //formulier wordt verwerkt
+    }
+}

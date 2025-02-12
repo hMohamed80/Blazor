@@ -1,0 +1,50 @@
+﻿@page "/gastenboek"
+<h1>Mijn gastenboek</h1>
+<h4>Laat hier jouw boodschap achter</h4>
+<EditForm EditContext="@editContext">
+    <DataAnnotationsValidator />
+    <label for="naam" class="col-form-label">Naam: </label>
+    <InputText id="naam" class="form-control" @bind-Value="@Model.Naam" />
+    <ValidationMessage For="@(() => Model.Naam)" />
+    <label for="tekst" class="col-form-label">Tekst: </label>
+    <InputTextArea id="tekst" class="form-control" @bind-Value="@Model.Tekst" />
+    <ValidationMessage For="@(() => Model.Tekst)" />
+    <button type="submit" class="btn btn-primary mt-2"
+            disabled="@OkKnopDisabled">
+        Ok
+    </button>
+</EditForm>
+@code
+{
+    private EditContext editContext;
+    private Boodschap Model = new Boodschap();
+    protected string OkKnopDisabled { get; set; } = "disabled";
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(Model);
+        editContext.OnFieldChanged += editContext_OnFieldChanged;
+        base.OnInitialized();
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+            SetOkDisabledStatus();
+    }
+    private void editContext_OnFieldChanged(object sender,
+    FieldChangedEventArgs e)
+    {
+        SetOkDisabledStatus();
+    }
+    private void SetOkDisabledStatus()
+    {
+        if (editContext.Validate())
+            OkKnopDisabled = null;
+        else
+            OkKnopDisabled = "disabled";
+    }
+    public void Dispose()
+    {
+        editContext.OnFieldChanged -= editContext_OnFieldChanged;
+    }
+}

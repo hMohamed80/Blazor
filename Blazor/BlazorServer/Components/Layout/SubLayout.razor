@@ -1,0 +1,20 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item px-3">
+         <NavLink class="nav-link" href="/hobbies" Match="NavLinkMatch.All" >
+         <span class="bi bi-book" aria-hidden="true"></span> Books
+         </NavLink>
+    </li>
+     <li class="nav-item px-3">
+         <NavLink class="nav-link" href="/hobbies/pictures" >
+         <span class="bi bi-images" aria-hidden="true"></span> Pictures
+         </NavLink>
+     </li>
+     <li class="nav-item px-3">
+        <NavLink class="nav-link" href="/hobbies/music" >
+        <span class="bi bi-music-note-beamed" aria-hidden="true"></span> Music
+        </NavLink>
+     </li>
+</ul>
+@Body
