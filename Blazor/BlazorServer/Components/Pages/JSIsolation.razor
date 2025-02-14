@@ -1,0 +1,26 @@
+﻿@page "/jsisolation"
+@inject IJSRuntime JSRuntime
+<h3>JSIsolation</h3>
+<button @onclick="VraagNaam" class="btn btn-primary">Vraag naam</button>
+<button @onclick="ToonNaam" class="btn btn-primary">Toon de naam</button>
+@code {
+ string naam = string.Empty;
+ IJSObjectReference module;
+ protected override async Task OnAfterRenderAsync(bool firstRender)
+ {
+ if (firstRender)
+ {
+ module = await JSRuntime.InvokeAsync<IJSObjectReference>(
+ "import", "./js/scripts.js");
+ }
+ }
+ async Task VraagNaam()
+ {
+ naam = await module.InvokeAsync<string>("NaamInvoeren",
+ "Vul jouw naam in : ");
+ }
+    async Task ToonNaam()
+    {
+        await module.InvokeVoidAsync("BoodschapTonen", $"Jouw naam is {naam}");
+    }
+}

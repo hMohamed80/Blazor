@@ -24,10 +24,36 @@
             },
             toonBoodschap: function (boodschap) {
                 document.getElementById('welkomstTekst').innerText = boodschap;
-            }
+            },
+           zetdefocus: function () {
+                document.getElementById('getal').focus();
+           }
         };
-
         window.setElementText = (element, text) => element.innerText = text;
+        window.returnPersonenlijstJs = function () {
+            DotNet.invokeMethodAsync('BlazorServer', 'GetPersonen')
+            .then(data => {
+            const tbody = document.querySelector("tbody");
+            for (let teller = 0; teller < data.length; ++teller) {
+                const tr = tbody.insertRow();
+                const idTd = tr.insertCell();
+                idTd.innerText = data[teller].id;
+                const voornaamTd = tr.insertCell();
+                voornaamTd.innerText = data[teller].voornaam;
+                const famnaamTd = tr.insertCell();
+                famnaamTd.innerText = data[teller].familienaam;
+            }
+         }
+        );
+        window.callGroeter = function (objectReference) {
+            return objectReference.invokeMethodAsync('Begroet')
+                .then(r => {
+                    const p = document.querySelector("#boodschap");
+                    p.innerText = r;
+                }
+                );
+        };
+    };
     </script>
 </head>
 

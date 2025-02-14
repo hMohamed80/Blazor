@@ -10,6 +10,29 @@
 <p class="mt-2 h3">
     <span class="badge bg-success p-3" @ref="spanElement"></span>
 </p>
+<h3>Personenlijst</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Voornaam</th>
+            <th>Familienaam</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary" onclick="returnPersonenlijstJs()">
+    Call static .NET method
+</button>
+<div class="my-4 ms-2">
+    <span for="jouwnaam">Jouw naam : </span>
+    <input id="jouwnaam" @bind-value="JouwNaam" />
+</div>
+<button type="button" class="btn btn-primary" @onclick="Begroeting">
+    Call .NET method
+</button>
+<p id="boodschap" class="mt-3" />
 @code {
         public int Getal { get; set; }
         private ElementReference spanElement;
@@ -29,7 +52,22 @@
             await JSRuntime.InvokeVoidAsync(
             "userInputFunctions.toonBoodschap",
             $"Hallo {naam}! Welkom bij Blazor!");
+
+            await JSRuntime.InvokeVoidAsync(
+            "userInputFunctions.zetdefocus");
         }
+    }
+    public string JouwNaam { get; set; }
+    private DotNetObjectReference<Groeter> objectReference;
+    private async Task Begroeting()
+    {
+        var groeter = new Groeter(JouwNaam);
+        objectReference = DotNetObjectReference.Create(groeter);
+        await JSRuntime.InvokeAsync<string>("callGroeter", objectReference);
+    }
+    public void Dispose()
+    {
+        objectReference?.Dispose();
     }
 
 }
