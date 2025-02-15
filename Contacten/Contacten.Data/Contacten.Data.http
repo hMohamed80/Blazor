@@ -1,0 +1,6 @@
+@Contacten.Data_HostAddress = http://localhost:5079
+
+GET {{Contacten.Data_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

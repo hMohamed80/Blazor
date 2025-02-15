@@ -1,0 +1,38 @@
+﻿@page "/contactenlijst"
+
+<h3>Contactenlijst</h3>
+@if (Contacten != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Voornaam</th>
+                <th>Naam</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Contacten)
+            {
+                <tr>
+                    <td>@c.Voornaam</td>
+                    <td>@c.Naam</td>
+                    <td>@c.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Retrieving data...</p>
+}
+@code {
+    [Inject]
+    public ContactenService ContactenService { get; set; }
+    public IEnumerable<Contact> Contacten { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Contacten = (await ContactenService.GetContacten()).ToList();
+    }
+}
