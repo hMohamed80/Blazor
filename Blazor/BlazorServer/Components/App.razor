@@ -44,7 +44,9 @@
                 famnaamTd.innerText = data[teller].familienaam;
             }
          }
-        );
+        )
+
+    };
         window.callGroeter = function (objectReference) {
             return objectReference.invokeMethodAsync('Begroet')
                 .then(r => {
@@ -53,7 +55,7 @@
                 }
                 );
         };
-    };
+   // };
     </script>
 </head>
 

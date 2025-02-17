@@ -1,27 +1,45 @@
 ﻿@page "/contactenlijst"
 
 <h3>Contactenlijst</h3>
-@if (Contacten != null)
+@if (totaalContacten != 0)
 {
     <table class="table">
         <thead>
             <tr>
+                <th></th>
+                <th>Id</th>
                 <th>Voornaam</th>
                 <th>Naam</th>
                 <th>Email</th>
+                <th>Geboortedatum</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var c in Contacten)
-            {
+            <Virtualize ItemsProvider="@LoadContacten"
+                        TItem="Contact" Context="c">
+                <ItemContent>
                 <tr>
+                    <td>
+                        <a href="contactdetail/@c.ContactId">
+                            <span class="bi bi-search" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                    <td>@c.ContactId</td>
                     <td>@c.Voornaam</td>
                     <td>@c.Naam</td>
                     <td>@c.Email</td>
+                    <td>@c.Geboortedatum.ToShortDateString()</td>
                 </tr>
-            }
+                </ItemContent>
+                <Placeholder>
+                    <tr>
+                        <td colspan="6">Loading&hellip;</td>
+                    </tr>
+                </Placeholder>
+            </Virtualize>
         </tbody>
     </table>
+    <a href="/editcontact" class="btn btn-primary">Create</a>
 }
 else
 {
@@ -30,9 +48,18 @@ else
 @code {
     [Inject]
     public ContactenService ContactenService { get; set; }
-    public IEnumerable<Contact> Contacten { get; set; }
+    private int totaalContacten;
+    private async ValueTask<ItemsProviderResult<Contact>> LoadContacten(
+    ItemsProviderRequest request)
+    {
+        var aantalContacten =
+        Math.Min(request.Count, totaalContacten - request.StartIndex);
+        var contacten = await ContactenService.GetContactenSubset(request.StartIndex,
+        aantalContacten);
+        return new ItemsProviderResult<Contact>(contacten, totaalContacten);
+    }
     protected override async Task OnInitializedAsync()
     {
-        Contacten = (await ContactenService.GetContacten()).ToList();
+        totaalContacten = (await ContactenService.GetAantalContacten());
     }
 }

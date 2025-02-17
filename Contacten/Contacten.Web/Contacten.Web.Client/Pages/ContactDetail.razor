@@ -1,0 +1,73 @@
+﻿@inject NavigationManager navmanager
+@page "/contactdetail/{id:int}"
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Contact.Voornaam @Contact.Naam</h1>
+            </div>
+            <div class="card-body">
+                <h4>
+                    <span class="oi oi-home" aria-hidden="true"
+                          style="width:30px;"></span> @Contact.Adres
+                </h4>
+                <h4 style="margin-left:36px;">
+                    @Contact.Postcode @Contact.Gemeente
+                </h4>
+                <h4>
+                    <span class="oi oi-phone" aria-hidden="true"
+                          style="width:30px;"></span> @Contact.Telefoon
+                </h4>
+                <h4>
+                    <span class="oi oi-envelope-closed" aria-hidden="true"
+                          style="width:30px;"></span> @Contact.Email
+                </h4>
+                <h4>
+                    <span class="oi oi-calendar" aria-hidden="true"
+                          style="width:30px;">
+                    </span> @Contact.Geboortedatum.ToShortDateString()
+                </h4>
+            </div>
+            <div class="card-footer text-center">
+                 @if (!deletePressed)
+                 {
+                    <div>
+                        <a href="/contactenlijst" class="btn btn-primary">Back</a>
+                        <a href="/editcontact/@Contact.ContactId"
+                           class="btn btn-primary">Edit</a>
+                        <button class="btn btn-danger" @onclick="ToggleDelete">Delete</button>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <p>Delete @Contact.Voornaam @Contact.Naam?</p>
+                        <button class="btn btn-primary" @onclick="DeleteContact">Yes</button>
+                        <button class="btn btn-primary" @onclick="ToggleDelete">No</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private bool deletePressed = false;
+    [Parameter]
+    public int Id { get; set; }
+    public Contact Contact { get; set; } = new Contact();
+    [Inject]
+    public ContactenService ContactenService { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        Contact = await ContactenService.GetContact(Id);
+    }
+    private void ToggleDelete()
+    {
+        deletePressed = !deletePressed;
+    }
+    private async void DeleteContact()
+    {
+        await ContactenService.DeleteContact(Id);
+        navmanager.NavigateTo("/contactenlijst");
+    }
+}

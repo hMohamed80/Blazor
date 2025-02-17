@@ -1,0 +1,95 @@
+﻿@page "/editcontact"
+@page "/editcontact/{id:int}"
+@inject NavigationManager navmanager
+<EditForm Model="@Contact" OnValidSubmit="UpdateContact">
+ <DataAnnotationsValidator />
+ <h3>@(Id == 0 ? "Create Contact" : "Edit Contact")</h3>
+ <div class="row my-3">
+ <label for="voornaam" class="col-sm-2 col-form-label">
+ Voornaam
+ </label>
+ <div class="col-sm-6">
+ <InputText id="voornaam" class="form-control"
+ @bind-Value="Contact.Voornaam" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="naam" class="col-sm-2 col-form-label">Naam</label>
+ <div class="col-sm-6">
+ <InputText id="naam" class="form-control"
+ @bind-Value="Contact.Naam" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="adres" class="col-sm-2 col-form-label">Adres</label>
+ <div class="col-sm-6">
+ <InputText id="adres" class="form-control"
+ @bind-Value="Contact.Adres" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="postcode" class="col-sm-2 col-form-label">Postcode</label>
+ <div class="col-sm-2">
+ <InputText id="postcode" class="form-control"
+ @bind-Value="Contact.Postcode" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="gemeente" class="col-sm-2 col-form-label">Gemeente</label>
+ <div class="col-sm-6">
+ <InputText id="gemeente" class="form-control"
+ @bind-Value="Contact.Gemeente" />
+ </div>
+ </div>
+ <div class="row my-3">
+ <label for="telefoon" class="col-sm-2 col-form-label">Telefoon</label>
+ <div class="col-sm-2">
+ <InputText id="telefoon" class="form-control"
+ @bind-Value="Contact.Telefoon" />
+ </div>
+ </div>
+    <div class="row my-3">
+        <label for="email" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-6">
+            <InputText id="email" class="form-control"
+                       @bind-Value="Contact.Email" />
+        </div>
+    </div>
+    <div class="row my-3">
+        <label for="geboorte" class="col-sm-2 col-form-label">
+            Geboortedatum
+        </label>
+        <div class="col-sm-2">
+            <InputDate id="geboorte" class="form-control"
+                       @bind-Value="Contact.Geboortedatum" />
+        </div>
+    </div>
+    <ValidationSummary />
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href=@(Id == 0 ? "/contactenlijst" : $"/contactdetail/{Contact.ContactId}")
+       class="btn btn-danger">Cancel</a>
+</EditForm>
+@code {
+    public Contact Contact { get; set; } = new Contact();
+    [Inject]
+    public ContactenService ContactenService { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id != 0)  Contact = await ContactenService.GetContact(Id);
+    }
+    private async void UpdateContact()
+    {
+        if (Id != 0)
+        {
+            await ContactenService.UpdateContact(Contact);
+            navmanager.NavigateTo($"/contactdetail/{Contact.ContactId}");
+        }
+        else
+        {
+            await ContactenService.AddContact(Contact);
+            navmanager.NavigateTo($"/contactenlijst");
+        }
+    }
+}

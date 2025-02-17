@@ -56,4 +56,13 @@ public class ContactenRepository : IContactenRepository
         }
         return null;
     }
+    public async Task<int> GetAantalContacten()
+    {
+        return await context.Contacten.CountAsync();
+    }
+    public async Task<IEnumerable<Contact>> GetContactenSubset(int from,
+ int number)
+    {
+        return await context.Contacten.Skip(from).Take(number).ToListAsync();
+    }
 }

@@ -41,6 +41,33 @@ public class ContactenController : ControllerBase
             "Database error");
         }
     }
+    [HttpGet]
+    [Route("/api/aantalcontacten")]
+    public async Task<ActionResult> GetAantalContacten()
+    {
+        try
+        {
+            return Ok(await contactenRepository.GetAantalContacten());
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+            "Database error");
+        }
+    }
+    [HttpGet("{from:int}/{number:int}")]
+    public async Task<ActionResult> GetContactenSubset(int from, int number)
+    {
+        try
+        {
+            return Ok(await contactenRepository.GetContactenSubset(from, number));
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+            "Database error");
+        }
+    }
     [HttpPost]
     public async Task<ActionResult<Contact>> CreateContact(Contact contact)
     {
